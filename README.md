@@ -6,6 +6,7 @@ Developed the firmware for an ESP32 using FreeRTOS to control the hardware and c
 
 
 
+
 *IPS - Escola Superior de Tecnologia de Setúbal*  
 *Licenciatura em Engenharia Eletrotécnica e de Computadores*  
 *Projeto de Internet das Coisas*  
