@@ -1,0 +1,1 @@
+O ficheiro PDF do modelo 3D deve ser aberto com o programa Adobe Acrobat para ser possível interagir com o modelo.
