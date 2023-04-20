@@ -1,0 +1,121 @@
+/*
+	Smart Pet Feeder, Create
+    
+    Desenvolvido por:
+    - Eduardo Silva, 202001449
+    - Manuel Lagarto, 202002147
+    - Rui colaço, 199100317
+*/
+
+-- -----------------------------------------------------
+
+create database projeto;
+use projeto;
+
+CREATE TABLE Utilizador
+(
+  ID_Utilizador int not null auto_increment,
+  nome varchar(60) not null,
+  password_utilizador varchar(60) not null,
+  Perfil INT NOT NULL,
+  telefone VARCHAR(20) NULL,
+  email varchar(60) not null,
+  PRIMARY KEY (ID_Utilizador)
+);
+
+CREATE TABLE Comedouro
+(
+  ID_comedouro int not null auto_increment,
+  Nome varchar(60) NOT NULL,
+  Nivelref_agua INT NOT NULL,
+  Local_comedouro varchar(60) NOT NULL,
+  Nivelref_racao INT NOT NULL,
+  PRIMARY KEY (ID_comedouro)
+);
+
+CREATE TABLE Animal
+(
+  ID_animal int not null auto_increment,
+  nome varchar(60) NOT NULL,
+  tipo varchar(5) NOT NULL,
+  peso INT NOT NULL,
+  idade INT NOT NULL,
+  ID_comedouro int not null,
+  PRIMARY KEY (ID_animal),
+  FOREIGN KEY (ID_comedouro) REFERENCES Comedouro(ID_comedouro)
+  ON DELETE cascade ON UPDATE cascade
+);
+
+CREATE TABLE Deposito
+(
+  ID_Deposito int not null auto_increment,
+  nivelref_max INT NOT NULL,
+  nivelref_min INT NOT NULL,
+  ID_comedouro INT NOT NULL,
+  PRIMARY KEY (ID_Deposito),
+  FOREIGN KEY (ID_comedouro) REFERENCES Comedouro(ID_comedouro)
+  ON DELETE cascade ON UPDATE cascade
+);
+
+CREATE TABLE Horarios
+(
+  ID_Horarios int not null auto_increment,
+  Hora time NOT NULL,
+  Dosagem_racao INT NOT NULL,
+  ID_comedouro INT NOT NULL,
+  PRIMARY KEY (ID_Horarios),
+  FOREIGN KEY (ID_comedouro) REFERENCES comedouro(ID_comedouro)
+  ON DELETE cascade ON UPDATE cascade
+);
+
+CREATE TABLE Historico
+( 
+  ID_Historico int not null auto_increment,
+  time_stamp datetime NOT NULL,
+  sensor varchar(10) NOT NULL,
+  nivel INT NOT NULL,
+  PRIMARY KEY (ID_Historico)
+);
+
+CREATE TABLE Mensagens
+(
+  ID_mensagens int not null auto_increment,
+  criticidade INT NOT NULL,
+  nome varchar(30) NOT NULL,
+  descricao varchar(200) NOT NULL,
+  PRIMARY KEY (ID_mensagens)
+);
+
+CREATE TABLE Utilizador_Comedouro
+(
+  ID_Utilizador int not null auto_increment,
+  ID_comedouro int not null ,
+  PRIMARY KEY (ID_Utilizador, ID_comedouro),
+  FOREIGN KEY (ID_Utilizador) REFERENCES Utilizador(ID_Utilizador)
+	ON DELETE cascade ON UPDATE cascade,
+  FOREIGN KEY (ID_comedouro) REFERENCES Comedouro(ID_comedouro)
+  ON DELETE cascade ON UPDATE cascade
+);
+
+
+CREATE TABLE Historico_Comedouro
+(
+  ID_Historico int not null,
+  ID_comedouro int not null,
+  PRIMARY KEY (ID_comedouro, ID_Historico),
+  FOREIGN KEY (ID_comedouro) REFERENCES Comedouro(ID_comedouro)
+  ON DELETE cascade ON UPDATE cascade,
+  FOREIGN KEY (ID_Historico) REFERENCES Historico(ID_Historico)
+  ON DELETE cascade ON UPDATE cascade
+);
+
+CREATE TABLE Mensagens_Comedouro
+(
+  ID_mensagens int not null,
+  ID_comedouro int not null,
+  PRIMARY KEY (ID_comedouro, ID_mensagens),
+  FOREIGN KEY (ID_comedouro) REFERENCES Comedouro(ID_comedouro)
+  ON DELETE cascade ON UPDATE cascade,
+  FOREIGN KEY (ID_mensagens) REFERENCES Mensagens(ID_mensagens)
+  ON DELETE cascade ON UPDATE cascade
+);

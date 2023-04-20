@@ -1,0 +1,138 @@
+/*
+	Smart Pet Feeder, Consultas
+    
+    Desenvolvido por:
+    - Eduardo Silva, 202001449
+    - Manuel Lagarto, 202002147
+    - Rui colaço, 199100317
+*/
+
+-- -----------------------------------------------------
+
+use projeto;
+
+/* utilizadores associados ao comedouro 1 ordenados pelo nome de utilizador de forma ascendente. */
+select u.ID_Utilizador,u.nome,u.perfil,c.ID_comedouro,c.nome
+from comedouro c
+join utilizador_comedouro uc on uc.ID_comedouro=c.ID_comedouro
+join utilizador u on uc.ID_Utilizador=u.ID_Utilizador
+where c.ID_comedouro=1
+order by u.nome asc; 
+
+-- -----------------------------------------------------
+
+/* query que mostra os ids de utilizador que estao associados a um comedouro que nao esta associado a nenhum animal */
+select u.ID_Utilizador as 'Numero utilizador',c.ID_comedouro as'Numero comedouro',c.nome as'Nome comedouro'  from comedouro c
+join utilizador_comedouro uc on uc.ID_comedouro=c.ID_comedouro
+join utilizador u on uc.ID_Utilizador=u.ID_Utilizador
+left join animal a on c.ID_comedouro=a.ID_comedouro
+where a.ID_comedouro is null;
+
+-- -----------------------------------------------------
+
+/* nome e idade do animal mais velho ordenado por utilizador */
+SELECT a.nome as 'Nome Animal', a.idade as 'Idade Animal', u.nome as 'Nome Utilizador'
+FROM animal a
+JOIN comedouro c ON a.ID_comedouro=c.ID_comedouro
+join utilizador_comedouro uc on uc.ID_comedouro=c.ID_comedouro
+join utilizador u on uc.ID_Utilizador=u.ID_Utilizador
+where (a.idade, u.nome) in
+(select max(a.idade),u.nome from animal a
+JOIN comedouro c ON a.ID_comedouro=c.ID_comedouro
+join utilizador_comedouro uc on uc.ID_comedouro=c.ID_comedouro
+join utilizador u on uc.ID_Utilizador=u.ID_Utilizador
+group by u.nome);
+
+select max(a.idade),u.nome from animal a
+JOIN comedouro c ON a.ID_comedouro=c.ID_comedouro
+join utilizador_comedouro uc on uc.ID_comedouro=c.ID_comedouro
+join utilizador u on uc.ID_Utilizador=u.ID_Utilizador
+group by u.nome;
+
+-- -----------------------------------------------------
+
+/* utilizadores com mais do que 3 comedouros associados */
+select u.nome as 'Nome Utilizador', count(*) as 'Total de comedouros'
+from utilizador u, comedouro c
+join utilizador_comedouro uc on uc.ID_comedouro=c.ID_comedouro
+where u.ID_Utilizador=uc.ID_Utilizador
+group by u.nome
+having count(*) >= 3
+order by u.nome;
+
+-- -----------------------------------------------------
+
+/* comedouros progamados para alimentar as 20:00:00 */
+select c.nome as 'Nome Comedouro',ho.hora as 'Hora'
+from comedouro c
+join horarios ho on c.ID_comedouro=ho.ID_comedouro
+having ho.hora = '20:00:00';
+
+select c.nome as 'Nome Comedouro',ho.hora as 'Hora'
+from comedouro c
+join horarios ho on c.ID_comedouro=ho.ID_comedouro
+where ho.hora = '20:00:00';
+
+-- -----------------------------------------------------
+
+/* Ver os comedouros e os animais associados a um comedouro */
+select u.ID_Utilizador,a.ID_comedouro,a.nome,a.tipo,a.peso,a.idade from comedouro c
+join utilizador_comedouro uc on uc.ID_comedouro=c.ID_comedouro
+join utilizador u on uc.ID_Utilizador=u.ID_Utilizador
+join animal a on c.ID_comedouro=a.ID_comedouro
+where u.ID_Utilizador=1;
+
+-- -----------------------------------------------------
+
+create view vListaAnimais AS
+select u.nome as 'Nome Utilizador', a.nome as 'Nome Animal', a.tipo, a.peso from utilizador u
+join utilizador_comedouro uc on uc.ID_Utilizador=u.ID_Utilizador
+join comedouro c on uc.ID_comedouro=c.ID_comedouro
+join animal a on c.ID_comedouro=a.ID_comedouro
+;
+
+/* ver todos os animais com um peso maior do que 30 */
+select * from vListaAnimais
+where peso >=30;
+
+/* ver qual é o animal menos pesado */
+select * from vListaAnimais
+where peso = (
+select min(peso)
+ from vListaAnimais );
+
+-- -----------------------------------------------------
+
+create view vHistorico AS 
+select c.ID_comedouro, c.nome, hi.time_stamp ,hi.sensor, hi.nivel from comedouro c
+left join historico_comedouro hic on c.ID_comedouro=hic.ID_Comedouro
+left join historico hi on hic.ID_Historico= hi.ID_historico ;
+
+/* ver quais sao os comedouros que ainda nao registaram nenhum valor no historico */
+select ID_comedouro from vHistorico
+where time_stamp is null;
+
+-- -----------------------------------------------------
+
+create view vmensagens AS 
+select c.ID_comedouro, c.nome as 'Comedouro nome', m.nome as 'titulo mensagem', m.criticidade,m.descricao from comedouro c
+left join mensagens_comedouro mc on c.ID_comedouro=mc.ID_Comedouro
+left join mensagens m on mc.ID_mensagens= m.ID_mensagens ;
+
+/* ver todos as colunas da view vmensagens */
+select * from vmensagens;
+
+-- -----------------------------------------------------
+
+create view vhorarios AS 
+select c.ID_comedouro, ho.hora as 'Hora',ho.dosagem_racao as'Dosagem racao',ID_Horarios as 'ID Horarios' from comedouro c
+join horarios ho on c.ID_comedouro=ho.ID_comedouro;
+
+/* ver todas as colunas da view horarios em que o ID de comedouro é 1, ordenados pela hora de forma ascendente */
+select * from vhorarios
+where ID_comedouro=1
+order by hora asc;
+
+/* ver todas as colunas da view horarios */
+SELECT * FROM vhorarios
+WHERE ID_Comedouro IN (SELECT ID_comedouro from utilizador_comedouro as uc WHERE ID_Utilizador=1);
