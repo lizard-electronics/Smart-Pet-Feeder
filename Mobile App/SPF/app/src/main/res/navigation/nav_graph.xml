@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/action_devices">
+
+    <fragment
+        android:id="@+id/action_devices"
+        android:name="com.example.spf.FirstFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_first">
+    </fragment>
+    <fragment
+        android:id="@+id/action_status"
+        android:name="com.example.spf.StatusFragment"
+        android:label="status"
+        tools:layout="@layout/fragment_status" />
+    <fragment
+        android:id="@+id/action_schedule"
+        android:name="com.example.spf.ScheduleFragment"
+        android:label="status"
+        tools:layout="@layout/fragment_schedule" />
+    <fragment
+        android:id="@+id/action_myprofile"
+        android:name="com.example.spf.MyProfileFragment"
+        android:label="myprofile"
+        tools:layout="@layout/fragment_my_profile" />
+    <fragment
+        android:id="@+id/action_myvet"
+        android:name="com.example.spf.MyVetFragment"
+        android:label="myvet"
+        tools:layout="@layout/fragment_my_vet" />
+    <activity
+        android:id="@+id/action_logout"
+        android:name="com.example.spf.Login"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+
+
+</navigation>

@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Smart Pet Feeder</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings para a side bar-->
+    <string name="action_status">Status</string>
+    <string name="action_schedule">Schedule</string>
+    <string name="action_myprofile">My Profile</string>
+    <string name="action_logout">Log Out</string>
+    <string name="action_devices">Devices</string>
+    <string name="action_myvet">My Vet</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">Devices</string>
+    <string name="second_fragment_label">Device selected</string>
+    <string name="qrscan">Scan Device QR Code</string>
+    <string name="previous">Previous</string>
+
+    <string name="username">User</string>
+
+    <string name="ip_adress">http://192.168.1.199/</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="user">Username</string>
+    <string name="pass">Password</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="adress">Adress</string>
+    <string name="device_selected_name">Device 1</string>
+    <string name="sensor_agua">agua</string>
+    <string name="sensor_racao">racao</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="next">Next</string>
+</resources>
